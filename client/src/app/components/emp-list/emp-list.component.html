@@ -1,0 +1,52 @@
+<div class="main">
+  <p-card header="Employees" subheader="List of all employees">
+    <div class="p-grid">
+      <div class="p-col-12">
+        <p-toolbar>
+          <div class="p-toolbar-group-start">
+            <p-button label="Add New" icon="pi pi-plus"
+              styleClass="p-button-success" routerLink="new"></p-button>
+          </div>
+        </p-toolbar>
+      </div>
+    </div>
+
+    <div class="loading">
+      <p *ngIf="isLoading">Loading...</p>
+      <p *ngIf="!isLoading">{{ errMsg }}</p>
+    </div>
+
+    <div class="p-grid animate__animated animate__fadeInDown" *ngIf="!isLoading && employees && employees.length > 0">
+      <div class="p-col-12">
+        <p-table [value]="employees" styleClass="p-datatable-gridlines">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+              <th pSortableColumn="department">Department <p-sortIcon field="department"></p-sortIcon></th>
+              <th pSortableColumn="salary">Salary <p-sortIcon field="salary"></p-sortIcon></th>
+              <th>Actions</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-employee>
+            <tr>
+              <td>{{employee.name}}</td>
+              <td>{{employee.department}}</td>
+              <td>{{employee.salary | currency: 'INR'}}</td>
+              <td>
+                <p-button icon="pi pi-trash"
+                  styleClass="p-button-danger mr-2"
+                  (click)="onDeleteEmp(employee._id, employee)"></p-button>
+                <p-button icon="pi pi-pencil"
+                  styleClass="p-button-error" (onClick)="onUpdateEmp(employee._id)"></p-button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </p-card>
+</div>
+
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+

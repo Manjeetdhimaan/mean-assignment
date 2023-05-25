@@ -1,0 +1,65 @@
+<div class="main">
+  <p-card [header]="editMode ? 'Edit Employee' : 'Add new employee'" [subheader]="editMode ?
+    'You can edit employee data here': 'You can add new employee here'">
+    <form [formGroup]="empForm" (ngSubmit)="onSubmitForm()">
+      <div class="grid mb-5">
+        <div class="col-12">
+          <p-toolbar>
+            <div class="p-toolbar-group-left"></div>
+            <div class="p-toolbar-group-right">
+              <p-button [label]="editMode ? 'Update' : 'Create'" icon="pi pi-plus" styleClass="p-button-primary mr-2"
+                type="submit" [disabled]="!empForm.valid || !empForm.dirty"></p-button>
+              <p-button label="Cancel" icon="pi pi-arrow-circle-left" styleClass="p-button-secondary"
+                routerLink="/employees"></p-button>
+            </div>
+          </p-toolbar>
+        </div>
+      </div>
+
+      <div class="grid animate__animated animate__fadeIn" *ngIf="!isLoading">
+        <div class="col-12">
+          <div class="formgrid grid">
+            <div class="field col-6">
+              <!-- using textbox as mentioned in assignment -->
+              <span class="p-float-label">
+                <input pInputText formControlName="name" id="name" class="w-full" />
+                <label htmlFor="name">Name*</label>
+              </span>
+              <small *ngIf="(f['name'].hasError('required') &&
+                f['name'].touched) || f['name'].hasError('required') &&
+                submitted" class="p-error">Name is required</small>
+            </div>
+            <div class="field col-6">
+              <!-- using textbox as mentioned in assignment -->
+              <span class="p-float-label">
+                <input pInputText formControlName="salary" id="salary" class="w-full" />
+                <label htmlFor="salary">Salary (INR)*</label>
+              </span>
+              <small *ngIf="(f['salary'].hasError('required') &&
+                f['salary'].touched) || f['salary'].hasError('required') &&
+                submitted" class="p-error">Salary is a required field</small>
+            </div>
+            <div class="field col-4">
+              <!-- using textarea as mentioned in assignment -->
+              <span class="p-float-label">
+                <textarea pInputTextarea class="block w-full" formControlName="department" id="department"
+                  rows="5"></textarea>
+                <label htmlFor="department">Department*</label>
+              </span>
+              <small *ngIf="(f['department'].hasError('required') &&
+                f['department'].touched) || f['department'].hasError('required') &&
+                submitted" class="p-error">Department is a required field</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="loading">
+      <!-- we can use spinner or skeleton when data is laoding -->
+      <p *ngIf="isLoading && !errMsg">Loading...</p>
+      <p *ngIf="!isLoading && errMsg">{{ errMsg }}</p>
+    </div>
+  </p-card>
+</div>
+
+<p-toast></p-toast>
